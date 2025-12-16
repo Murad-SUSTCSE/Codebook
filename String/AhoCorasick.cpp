@@ -1,5 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
 typedef struct AC {
     static const int K = 26;
     struct node {
@@ -90,13 +88,4 @@ void solve() {
     }
     cout << "Case " << cs++ << ":\n";
     for (int i = 1; i <= n; i++) cout << res[i] << "\n";
-}
-int32_t main() {
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    int TestCase = 1;
-    cin >> TestCase;
-    while(TestCase--)
-        solve();
-    return 0;
 }

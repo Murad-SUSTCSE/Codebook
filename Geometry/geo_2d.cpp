@@ -56,23 +56,19 @@ struct line {
     	pair<PT, PT> get_points() { //extract any two points from this line
 		PT p, q; double a = -v.y, b = v.x; // ax + by = c
 		if (sign(a) == 0) {
-		    p = PT(0, c / b);
-		    q = PT(1, c / b);
+		    p = PT(0, c / b); q = PT(1, c / b);
 		}
 		else if (sign(b) == 0) {
-		    p = PT(c / a, 0);
-		    q = PT(c / a, 1);
+		    p = PT(c / a, 0); q = PT(c / a, 1);
 		}
 		else {
-		    p = PT(0, c / b);
-		    q = PT(1, (c - a) / b);
+		    p = PT(0, c / b); q = PT(1, (c - a) / b);
 		}
 		return {p, q};
     	}
     // ax + by + c = 0
     array<double, 3> get_abc() {
-        double a = -v.y, b = v.x;
-        return {a, b, -c};
+        double a = -v.y, b = v.x; return {a, b, -c};
     }
     // 1 if on the left, -1 if on the right, 0 if on the line
     int side(PT p) { return sign(cross(v, p) - c); }
@@ -481,43 +477,6 @@ PT geometric_median(vector<PT> p) {
     }
     return {xl, findY(xl).first };
 }
-vector<PT> convex_hull(vector<PT> &p) {
-	if (p.size() <= 1) return p;
-	vector<PT> v = p;
-    sort(v.begin(), v.end());
-    vector<PT> up, dn;
-    for (auto& p : v) {
-        while (up.size() > 1 && orientation(up[up.size() - 2], up.back(), p) >= 0) {
-            up.pop_back();
-        }
-        while (dn.size() > 1 && orientation(dn[dn.size() - 2], dn.back(), p) <= 0) {
-            dn.pop_back();
-        }
-        up.push_back(p);
-        dn.push_back(p);
-    }
-    v = dn;
-    if (v.size() > 1) v.pop_back();
-    reverse(up.begin(), up.end());
-    up.pop_back();
-    for (auto& p : up) {
-        v.push_back(p);
-    }
-    if (v.size() == 2 && v[0] == v[1]) v.pop_back();
-    return v;
-}
- //checks if convex or not
-bool is_convex(vector<PT> &p) {
-    bool s[3]; s[0] = s[1] = s[2] = 0;
-    int n = p.size();
-    for (int i = 0; i < n; i++) {
-        int j = (i + 1) % n;
-        int k = (j + 1) % n;
-        s[sign(cross(p[j] - p[i], p[k] - p[i])) + 1] = 1;
-        if (s[0] && s[2]) return 0;
-    }
-    return 1;
-}
 // -1 if strictly inside, 0 if on the polygon, 1 if strictly outside
 // it must be strictly convex, otherwise make it strictly convex first
 int is_point_in_convex(vector<PT> &p, const PT& x) { // O(log n)
@@ -867,4 +826,3 @@ double maximum_inscribed_circle(vector<PT> p) {
 	}
 	return l;
 }
-

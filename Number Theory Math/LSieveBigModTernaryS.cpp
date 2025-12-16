@@ -1,16 +1,12 @@
 int a[], n elements;
-
-int mx  = 0;
-int ans = 0;
+int mx  = 0; int ans = 0;
 for (int i = 0; i < n; i++) {
    mx  = max(mx+a[i], (int)0);
    ans = max(ans, mx);
 }
-//
 #define sz 1000
 vector <int> prime;
 bitset <sz> bs;
-
 void sieve() {
    bs.set(); // all bit = 1..
    bs[0] = bs[1] = 0;
@@ -23,8 +19,6 @@ void sieve() {
       }
    }
 }
-//
-
 void solve()
 {
    int n = 12;
@@ -46,26 +40,9 @@ void solve()
    }  
    cout << a[l] << endl;
 }
-//
 int mod = 1e9 + 7;
-
-int bigmod(int a, int b, int m) {
-    a %= m;
-    int res = 1;
-    while (b > 0) {
-      if (b & 1)
-         res = res * a % m;
-      a = a * a % m;
-      b >>= 1;
-   }
-    return res;
-}
-int inversemod(int n) {
-   return binpow(n, mod-2, mod)%mod;
-}
-
 // linear sieve.
-std::vector <int> prime;
+vector <int> prime;
 bool is_composite[MAXN];
 void sieve (int n) {
 	std::fill (is_composite, is_composite + n, false);
@@ -77,16 +54,4 @@ void sieve (int n) {
 		}
 	}
 }
-
-
-//
-// #include <ext/pb_ds/assoc_container.hpp>
-// #include<ext/pb_ds/tree_policy.hpp>
-// using namespace __gnu_pbds;
-// using namespace __gnu_cxx;
-// template <typename T> using oset = 
-// tree<T, null_type, less<T>, 
-// rb_tree_tag, tree_order_statistics_node_update>;
-mt19937 rng(chrono::steady_clock::now().time_since_epoch().count());
-
 

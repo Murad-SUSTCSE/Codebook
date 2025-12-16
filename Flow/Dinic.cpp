@@ -39,20 +39,15 @@ struct Dinic {
         return level[t] != -1;
     }
     int dfs(int v, int pushed) {
-        if (pushed == 0)
-            return 0;
-        if (v == t)
-            return pushed;
+        if (pushed == 0) return 0;
+        if (v == t) return pushed;
         for (int& cid = ptr[v]; cid < (int)adj[v].size(); cid++) {
             int id = adj[v][cid];
             int u = edges[id].u;
-            if (level[v] + 1 != level[u])
-                continue;
+            if (level[v] + 1 != level[u]) continue;
             int tr = dfs(u, min(pushed, edges[id].cap - edges[id].flow));
-            if (tr == 0)
-                continue;
-            edges[id].flow += tr;
-            edges[id ^ 1].flow -= tr;
+            if (tr == 0) continue;
+            edges[id].flow += tr; edges[id ^ 1].flow -= tr;
             return tr;
         }
         return 0;

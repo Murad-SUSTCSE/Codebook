@@ -1,21 +1,9 @@
-#include<bits/stdc++.h>
-using namespace std;
-
 struct SuffixArray {
-    int n;
-    string s;
+    int n; string s;
     vector<int> sa, rankv, tmp, lcp;
-
     SuffixArray(const string &str) {
-        s = str;
-        n = s.size();
-        sa.resize(n);
-        rankv.resize(n);
-        tmp.resize(n);
-        build();
-        build_lcp();
+        s = str; n = s.size(); sa.resize(n); rankv.resize(n); tmp.resize(n); build(); build_lcp();
     }
-
     void counting_sort(int k) {
         int maxi = max(256ll, (long long)n) + 5;
         vector<int> cnt(maxi, 0), sa2(n);
@@ -30,11 +18,9 @@ struct SuffixArray {
         }
         sa.swap(sa2);
     }
-
     void build() {
         for (int i = 0; i < n; i++) {
-            sa[i] = i;
-            rankv[i] = (unsigned char)s[i];
+            sa[i] = i; rankv[i] = (unsigned char)s[i];
         }
         for (int k = 1; k < n; k <<= 1) {
             counting_sort(k);
@@ -51,7 +37,6 @@ struct SuffixArray {
             if (r == n - 1) break;
         }
     }
-
     void build_lcp() {
         lcp.assign(max(0, n - 1), 0);
         vector<int> inv(n);
@@ -66,12 +51,10 @@ struct SuffixArray {
         }
     }
 };
-
 void solve(const string &s, const string &t) {
     // build local combined string so we don't mutate inputs
     int n = s.size();
     string combined = s + '$' + t;
     int N = combined.size();
-
     SuffixArray sa(combined);
 }

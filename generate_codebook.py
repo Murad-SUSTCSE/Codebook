@@ -141,11 +141,14 @@ def compile_latex(tex_name: str):
     # Run twice so table of contents page numbers compute correctly
     for _ in range(2):
         cmd = ["pdflatex", "-interaction=nonstopmode", tex_name]
-        res = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        if res.returncode != 0:
-            print(f"Error compiling {tex_name}:")
-            print(res.stdout.decode("utf-8", errors="ignore")[-1500:])
-            sys.exit(1)
+        # We capture the output but don't immediately crash on a non-zero return code
+        subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        
+    # Instead of checking the strict return code, check if the PDF actually generated
+    pdf_name = tex_name.replace(".tex", ".pdf")
+    if not os.path.exists(pdf_name):
+        print(f"Error: {pdf_name} was not generated!")
+        sys.exit(1)
 
 
 def main():

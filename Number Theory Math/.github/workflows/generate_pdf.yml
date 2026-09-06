@@ -1,0 +1,41 @@
+name: Auto-Generate PDF
+
+on:
+  push:
+    # Prevents an infinite loop when the bot pushes the new PDF
+    paths-ignore:
+      - '**.pdf' 
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write 
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install LaTeX and dependencies
+        # Installs the standard TeX tools needed for algorithmic codebooks
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-base texlive-latex-extra texlive-fonts-recommended
+      
+      # Uncomment this block if your repository uses a Python script to build the codebook
+      # - name: Set up Python
+      #   uses: actions/setup-python@v5
+      #   with:
+      #     python-version: '3.10'
+
+      - name: Compile the PDF
+        run: |
+          # REPLACE THIS with the exact command you use locally!
+          # Examples: `make`, `python build.py`, or `pdflatex codebook.tex`
+          make 
+
+      - name: Commit and push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "Auto-compile codebook PDF [skip ci]"
+          file_pattern: "*.pdf"

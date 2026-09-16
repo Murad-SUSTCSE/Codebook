@@ -41,7 +41,38 @@ struct XorBasis {
     ll sumOfAll() {
         return tmp * (1LL << (N - 1));
     }
+
+
+    // Ret: #subsets with XOR sum S where (S & x) == x (mod) | O(B^2), B = basis.size()
+ll cntSuperset(ll x) {
+    vector<ll> tb;
+    for (ll b : basis) {
+        ll v = b & x;
+        for (ll t : tb) v = min(v, v ^ t);
+        if (v) { tb.push_back(v); sort(tb.rbegin(), tb.rend()); }
+    }
+    ll t = x;
+    for (ll b : tb) t = min(t, t ^ b);
+    if (t) return 0;
+    ll f = N - tb.size(), r = 1;
+    while (f--) r = r * 2 % mod;
+    return r;
+}
+
+// Ret: #subsets with XOR sum S where (S & ~x) == 0 (mod) | O(B^2), B = basis.size()
+ll cntSubmask(ll x) {
+    vector<ll> tb;
+    for (ll b : basis) {
+        ll v = b & ~x;
+        for (ll t : tb) v = min(v, v ^ t);
+        if (v) { tb.push_back(v); sort(tb.rbegin(), tb.rend()); }
+    }
+    ll f = N - tb.size(), r = 1;
+    while (f--) r = r * 2 % mod;
+    return r;
+}        
     // returns k-th smallest xor value (1-indexed)
+
     ll kth(ll k) {
         ll sz = size();
         if (k > (1LL << sz)) return -1;
